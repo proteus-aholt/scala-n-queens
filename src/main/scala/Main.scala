@@ -52,7 +52,9 @@ object Main extends App {
     populateBoard()
   }
 
-  doQueens(Array.ofDim[Int](8, 8))
+  val n = 8
+
+  doQueens(Array.ofDim[Int](n, n))
   println("Queens Completed!")
   println()
 }
