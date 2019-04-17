@@ -1,3 +1,5 @@
+import scala.math.{abs, max}
+
 object Main extends App {
   def doQueens(
       board: Array[Array[Int]]
@@ -8,37 +10,18 @@ object Main extends App {
     case class Point(x: Int, y: Int)
 
     def threatens(p1: Point, p2: Point) =
-      p1.x == p2.x || p1.y == p2.y || threatensDiagonally(p1, p2)
+      p1.x == p2.x || 
+      p1.y == p2.y || 
+      (for {
+        i <- 0 to max(abs(p1.x - p2.x), abs(p1.y - p2.y))
+        if ((p1.x + i == p2.x && p1.y + i == p2.y) ||
+          (p1.x - i == p2.x && p1.y - i == p2.y) ||
+          (p1.x - i == p2.x && p1.y + i == p2.y) ||
+          (p1.x + i == p2.x && p1.y - i == p2.y))
+      } yield Point(p1.x + i, p1.y + i)).nonEmpty
 
     def threatensAny(p1: Point, points: Seq[Point]) =
       (for (p2 <- points if threatens(p1, p2)) yield p2).nonEmpty
-
-    def threatensDiagonally(p1: Point, p2: Point): Boolean = {
-      def threatensDiagonallyUp(p1i: Point = p1): Boolean =
-        if (p1i.x == p2.x && p1i.y == p2.y) true
-        else if (p1i.x >= p2.x || p1i.y >= p2.y) false
-        else threatensDiagonallyUp(Point(p1i.x + 1, p1i.y + 1))
-
-      def threatensDiagonallyDown(p1i: Point = p1): Boolean =
-        if (p1i.x == p2.x && p1i.y == p2.y) true
-        else if (p1i.x <= p2.x || p1i.y <= p2.y) false
-        else threatensDiagonallyDown(Point(p1i.x - 1, p1i.y - 1))
-
-      def threatensDiagonallyUpInverse(p1i: Point = p1): Boolean =
-        if (p1i.x == p2.x && p1i.y == p2.y) true
-        else if (p1i.x <= p2.x || p1i.y >= p2.y) false
-        else threatensDiagonallyUpInverse(Point(p1i.x - 1, p1i.y + 1))
-
-      def threatensDiagonallyDownInverse(p1i: Point = p1): Boolean =
-        if (p1i.x == p2.x && p1i.y == p2.y) true
-        else if (p1i.x >= p2.x || p1i.y <= p2.y) false
-        else threatensDiagonallyDownInverse(Point(p1i.x + 1, p1i.y - 1))
-
-      threatensDiagonallyDown() ||
-      threatensDiagonallyUp() ||
-      threatensDiagonallyUpInverse() ||
-      threatensDiagonallyDownInverse()
-    }
 
     def getAllocatedPoints(): Seq[Point] =
       for {
