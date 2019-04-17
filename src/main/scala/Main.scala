@@ -47,7 +47,7 @@ object Main extends App {
         if (board(x)(y) != 0)
       } yield Point(x, y)
 
-    def populateBoard2(x: Int = 0): Boolean =
+    def populateBoard(x: Int = 0): Boolean =
       if (x == queenCount) {
         val boardStr = board.deep.mkString("\n")
         println(s"Solution #${slns + 1}: \n----\n$boardStr\n----\n")
@@ -59,14 +59,14 @@ object Main extends App {
           val point = Point(x, y)
           if (!threatensAny(point, getAllocatedPoints())) {
             board(x)(y) = 1
-            result = populateBoard2(x + 1) || result
+            result = populateBoard(x + 1) || result
             board(x)(y) = 0
           }
         }
         result
       }
 
-    populateBoard2()
+    populateBoard()
   }
 
   doQueens(Array.ofDim[Int](8, 8))
