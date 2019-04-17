@@ -2,9 +2,9 @@ Scala Implementation of the N-Queens Problem.
 
 See:  https://en.wikipedia.org/wiki/Eight_queens_puzzle
 
-To run:  Execute `sbt` then when repl is up, run `run`
+To run:  Execute `sbt run`
 
-N is set within the code.
+N for the problem is set within the code.
 
 
 

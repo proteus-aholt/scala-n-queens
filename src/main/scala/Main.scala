@@ -20,9 +20,6 @@ object Main extends App {
           (p1.x + i == p2.x && p1.y - i == p2.y))
       } yield Point(p1.x + i, p1.y + i)).nonEmpty
 
-    def threatensAny(p1: Point, points: Seq[Point]) =
-      (for (p2 <- points if threatens(p1, p2)) yield p2).nonEmpty
-
     def getAllocatedPoints(): Seq[Point] =
       for {
         x <- 0 to board.length - 1
@@ -40,7 +37,7 @@ object Main extends App {
         var result = false
         for (y <- 0 to queenCount - 1) {
           val point = Point(x, y)
-          if (!threatensAny(point, getAllocatedPoints())) {
+          if ((for (p2 <- getAllocatedPoints() if threatens(point, p2)) yield p2).isEmpty) {
             board(x)(y) = 1
             result = populateBoard(x + 1) || result
             board(x)(y) = 0
